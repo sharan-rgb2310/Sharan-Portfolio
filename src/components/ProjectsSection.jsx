@@ -66,7 +66,8 @@ function ProjectCard({ title, desc, image, tags, liveLink, githubLink, delay }) 
       className="glass-card overflow-hidden group flex flex-col h-full hover:shadow-2xl hover:shadow-purple-500/15 hover:border-purple-500/30 transition-all duration-500"
     >
       {/* Image */}
-      <div className="relative h-56 overflow-hidden flex-shrink-0">
+      {/* FIX: was h-56 fixed — now h-44 sm:h-52 md:h-56 for smaller screens */}
+      <div className="relative h-44 sm:h-52 md:h-56 overflow-hidden flex-shrink-0">
         <img
           src={image}
           alt={title}
@@ -75,8 +76,9 @@ function ProjectCard({ title, desc, image, tags, liveLink, githubLink, delay }) 
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/30 to-transparent" />
 
-        {/* Hover overlay buttons */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 gap-4">
+        {/* Hover overlay buttons — desktop only */}
+        {/* FIX: hidden on touch (sm:flex) — mobile uses footer links below */}
+        <div className="absolute inset-0 items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 gap-4 hidden sm:flex">
           {liveLink ? (
             <motion.a
               href={liveLink}
@@ -117,12 +119,13 @@ function ProjectCard({ title, desc, image, tags, liveLink, githubLink, delay }) 
       </div>
 
       {/* Body */}
-      <div className="p-8 flex flex-col flex-grow">
-        <h3 className="text-xl font-display font-bold text-white mb-3 group-hover:text-[#a855f7] transition-colors duration-300 leading-snug">
+      <div className="p-6 sm:p-8 flex flex-col flex-grow">
+        <h3 className="text-lg sm:text-xl font-display font-bold text-white mb-3 group-hover:text-[#a855f7] transition-colors duration-300 leading-snug">
           {title}
         </h3>
-        <p className="text-sm text-gray-400 leading-relaxed font-light mb-6 flex-grow">{desc}</p>
-        <div className="flex flex-wrap gap-2">
+        <p className="text-sm text-gray-400 leading-relaxed font-light mb-5 flex-grow">{desc}</p>
+
+        <div className="flex flex-wrap gap-2 mb-4">
           {tags.map((tag) => (
             <span
               key={tag}
@@ -131,6 +134,43 @@ function ProjectCard({ title, desc, image, tags, liveLink, githubLink, delay }) 
               {tag}
             </span>
           ))}
+        </div>
+
+        {/* FIX: Mobile-visible links — always shown on small screens (sm:hidden),
+            complements the hover overlay which is hidden on touch */}
+        <div className="flex gap-3 sm:hidden">
+          {liveLink ? (
+            <a
+              href={liveLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-[11px] font-bold uppercase tracking-widest text-gray-300 hover:text-[#a855f7] hover:border-purple-500/30 transition-colors"
+            >
+              <ExternalLink size={12} />
+              Demo
+            </a>
+          ) : (
+            <span className="flex items-center gap-1.5 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-[11px] font-bold uppercase tracking-widest text-gray-600 cursor-not-allowed">
+              <ExternalLink size={12} />
+              No Demo
+            </span>
+          )}
+          {githubLink ? (
+            <a
+              href={githubLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-[11px] font-bold uppercase tracking-widest text-gray-300 hover:text-[#a855f7] hover:border-purple-500/30 transition-colors"
+            >
+              <Github size={12} />
+              GitHub
+            </a>
+          ) : (
+            <span className="flex items-center gap-1.5 px-3 py-2 bg-white/5 border border-white/10 rounded-lg text-[11px] font-bold uppercase tracking-widest text-gray-600 cursor-not-allowed">
+              <Github size={12} />
+              Private
+            </span>
+          )}
         </div>
       </div>
     </motion.div>
@@ -149,21 +189,21 @@ export default function ProjectsSection({ limit }) {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="mb-16"
+        className="mb-12 sm:mb-16"
       >
         <p className="text-[10px] uppercase tracking-[0.35em] text-purple-400/80 font-bold mb-4">
           Selected Work
         </p>
-        <h2 className="text-5xl md:text-6xl font-display font-bold mb-4">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-display font-bold mb-4">
           Featured <span className="gradient-text">Projects.</span>
         </h2>
-        <p className="text-gray-400 font-light max-w-xl text-lg">
+        <p className="text-gray-400 font-light max-w-xl text-base sm:text-lg">
           A selection of projects where technical complexity meets intuitive interface design.
         </p>
       </motion.div>
 
       {/* Grid */}
-      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
         <AnimatePresence mode="popLayout">
           {displayed.map((project, i) => (
             <ProjectCard key={project.title} {...project} delay={i * 0.08} />

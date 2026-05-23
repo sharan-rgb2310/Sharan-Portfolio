@@ -1,5 +1,0 @@
-This is a placeholder file named Sharan_Resume.pdf.
-
-Please replace this file with your actual resume PDF. Save the real PDF at `public/resume/Sharan_Resume.pdf` to enable the Download Resume buttons in the navbar and hero sections.
-
-(Only the filename and path matter for the links; Vite will serve files in `public/` at the root path.)

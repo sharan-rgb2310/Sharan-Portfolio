@@ -1,6 +1,5 @@
 import { motion } from 'motion/react';
 
-/* ── Skill data with devicon SVG icons ──────────────── */
 const MARQUEE_SKILLS = [
   { name: 'HTML5',        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
   { name: 'CSS3',         icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
@@ -20,7 +19,6 @@ const MARQUEE_SKILLS = [
   { name: 'MySQL',        icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
 ];
 
-/* ── Proficiency data ───────────────────────────────── */
 const SKILL_CATEGORIES = [
   {
     label: 'Frontend',
@@ -59,66 +57,70 @@ const SKILL_CATEGORIES = [
 
 const doubled = [...MARQUEE_SKILLS, ...MARQUEE_SKILLS];
 
-/* ── Marquee row — pauses on hover ─────────────────── */
+/* ── Marquee row — CSS-based pause on hover (bug fix) ── */
 function MarqueeRow({ reverse = false, duration = 30 }) {
+  const animClass = reverse ? 'marquee-rev' : 'marquee-fwd';
+
   return (
     <div className="relative overflow-hidden">
       <div className="pointer-events-none absolute left-0 top-0 h-full w-28 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" />
       <div className="pointer-events-none absolute right-0 top-0 h-full w-28 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" />
 
-      <div
-        className="flex gap-4 w-max"
-        style={{
-          animation: `marquee${reverse ? 'Rev' : ''} ${duration}s linear infinite`,
-        }}
-      >
-        {doubled.map((skill, i) => (
-          <motion.div
-            key={`${skill.name}-${i}`}
-            whileHover={{ scale: 1.1, borderColor: 'rgba(168,85,247,0.55)' }}
-            onHoverStart={(e) => {
-              const row = e.target.closest('[data-marquee]');
-              if (row) row.style.animationPlayState = 'paused';
-            }}
-            onHoverEnd={(e) => {
-              const row = e.target.closest('[data-marquee]');
-              if (row) row.style.animationPlayState = 'running';
-            }}
-            className="flex-shrink-0 flex items-center gap-3 bg-white/5 border border-white/10
-                       px-5 py-3.5 rounded-xl hover:bg-white/10 hover:shadow-lg
-                       hover:shadow-purple-500/15 transition-all duration-300 cursor-default select-none"
-          >
-            <img
-              src={skill.icon}
-              alt={skill.name}
-              className="w-6 h-6 object-contain"
-              loading="lazy"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            />
-            <span className="text-xs font-bold uppercase tracking-widest text-gray-300 whitespace-nowrap">
-              {skill.name}
-            </span>
-          </motion.div>
-        ))}
+      {/* FIX: data-marquee added + pause via CSS group-hover on the outer wrapper */}
+      <div className="marquee-track group" data-marquee="true">
+        <div
+          className={`flex gap-4 w-max ${animClass}`}
+          style={{ '--marquee-duration': `${duration}s` }}
+        >
+          {doubled.map((skill, i) => (
+            <motion.div
+              key={`${skill.name}-${i}`}
+              whileHover={{ scale: 1.1, borderColor: 'rgba(168,85,247,0.55)' }}
+              className="flex-shrink-0 flex items-center gap-3 bg-white/5 border border-white/10
+                         px-5 py-3.5 rounded-xl hover:bg-white/10 hover:shadow-lg
+                         hover:shadow-purple-500/15 transition-all duration-300 cursor-default select-none"
+            >
+              <img
+                src={skill.icon}
+                alt={skill.name}
+                className="w-6 h-6 object-contain"
+                loading="lazy"
+                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+              />
+              <span className="text-xs font-bold uppercase tracking-widest text-gray-300 whitespace-nowrap">
+                {skill.name}
+              </span>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       <style>{`
-        @keyframes marquee {
+        @keyframes marquee-fwd {
           from { transform: translateX(0); }
           to   { transform: translateX(-50%); }
         }
-        @keyframes marqueeRev {
+        @keyframes marquee-rev {
           from { transform: translateX(-50%); }
           to   { transform: translateX(0); }
         }
-        div[style*="marquee"] { animation-play-state: running; }
-        div[style*="marquee"]:hover { animation-play-state: paused; }
+        .marquee-fwd {
+          animation: marquee-fwd var(--marquee-duration, 30s) linear infinite;
+        }
+        .marquee-rev {
+          animation: marquee-rev var(--marquee-duration, 30s) linear infinite;
+        }
+        /* FIX: pause the inner animated div when outer wrapper is hovered */
+        .marquee-track:hover .marquee-fwd,
+        .marquee-track:hover .marquee-rev {
+          animation-play-state: paused;
+        }
       `}</style>
     </div>
   );
 }
 
-/* ── Stat bar ───────────────────────────────────────── */
+/* ── Stat bar ─────────────────────────────────────────── */
 function StatBar({ name, level, color, delay }) {
   return (
     <motion.div
@@ -150,12 +152,11 @@ function StatBar({ name, level, color, delay }) {
   );
 }
 
-/* ── Main ───────────────────────────────────────────── */
+/* ── Main ─────────────────────────────────────────────── */
 export default function SkillsSection() {
   return (
     <div className="space-y-20">
 
-      {/* Heading */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -170,7 +171,6 @@ export default function SkillsSection() {
         </p>
       </motion.div>
 
-      {/* Two marquee rows */}
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -182,7 +182,6 @@ export default function SkillsSection() {
         <MarqueeRow reverse={true}  duration={34} />
       </motion.div>
 
-      {/* Proficiency cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {SKILL_CATEGORIES.map((cat, ci) => (
           <motion.div

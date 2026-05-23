@@ -56,21 +56,21 @@ export default function ContactSection() {
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
       >
-        <h2 className="text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-8">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-bold leading-tight mb-8">
           Let's build <br />
           <span className="gradient-text">together.</span>
         </h2>
 
-        <p className="text-gray-400 font-light text-xl mb-12 max-w-md">
+        <p className="text-gray-400 font-light text-lg sm:text-xl mb-10 sm:mb-12 max-w-md">
           Currently accepting freelance opportunities and frontend developer roles.
           If you have a vision, let's make it digital reality.
         </p>
 
         <div className="space-y-8">
           {/* Email row */}
-          <div className="flex items-center space-x-6">
-            <div className="p-4 bg-white/5 rounded-2xl text-[#a855f7] border border-white/5 flex-shrink-0">
-              <Mail size={24} />
+          <div className="flex items-center space-x-4 sm:space-x-6">
+            <div className="p-3 sm:p-4 bg-white/5 rounded-2xl text-[#a855f7] border border-white/5 flex-shrink-0">
+              <Mail size={22} />
             </div>
             <div>
               <p className="text-[10px] uppercase tracking-widest text-gray-500 font-bold mb-1">Email</p>
@@ -78,7 +78,7 @@ export default function ContactSection() {
                 href="https://mail.google.com/mail/?view=cm&to=sharanithish@gmail.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-lg font-medium text-white hover:text-[#a855f7] transition-colors"
+                className="text-base sm:text-lg font-medium text-white hover:text-[#a855f7] transition-colors break-all"
               >
                 sharanithish@gmail.com
               </a>
@@ -86,11 +86,11 @@ export default function ContactSection() {
           </div>
 
           {/* Socials row */}
-          <div className="flex items-center space-x-6">
-            <div className="p-4 bg-white/5 rounded-2xl text-[#a855f7] border border-white/5 flex-shrink-0">
+          <div className="flex items-center space-x-4 sm:space-x-6">
+            <div className="p-3 sm:p-4 bg-white/5 rounded-2xl text-[#a855f7] border border-white/5 flex-shrink-0">
               <ShareIcon />
             </div>
-            <div className="flex items-center space-x-8">
+            <div className="flex items-center space-x-6 sm:space-x-8">
               <SocialLink
                 icon={<Linkedin size={20} />}
                 name="LinkedIn"
@@ -117,13 +117,14 @@ export default function ContactSection() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="glass-card p-10 md:p-12 relative overflow-hidden"
+        // FIX: was p-10 md:p-12 — now starts at p-6 for small screens
+        className="glass-card p-6 sm:p-8 md:p-10 lg:p-12 relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 blur-3xl rounded-full translate-x-1/2 -translate-y-1/2 pointer-events-none" />
 
         {sent ? (
           <motion.div
-            className="relative z-10 flex flex-col items-center justify-center h-full min-h-[320px] gap-5"
+            className="relative z-10 flex flex-col items-center justify-center h-full min-h-[280px] sm:min-h-[320px] gap-5"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
           >
@@ -132,7 +133,7 @@ export default function ContactSection() {
             <p className="text-gray-400 text-center text-sm">I'll get back to you as soon as possible.</p>
           </motion.div>
         ) : (
-          <form onSubmit={handleSubmit} className="relative z-10 space-y-8">
+          <form onSubmit={handleSubmit} className="relative z-10 space-y-6 sm:space-y-8">
             {[
               { label: 'Name',  name: 'name',  type: 'text',  placeholder: 'Your full name' },
               { label: 'Email', name: 'email', type: 'email', placeholder: 'hello@world.com' },
@@ -166,7 +167,7 @@ export default function ContactSection() {
 
             <motion.button
               type="submit"
-              className="w-full gradient-bg py-5 rounded-2xl flex items-center justify-center space-x-3 text-white font-bold tracking-widest uppercase text-xs hover:opacity-90 transition-all"
+              className="w-full gradient-bg py-4 sm:py-5 rounded-2xl flex items-center justify-center space-x-3 text-white font-bold tracking-widest uppercase text-xs hover:opacity-90 transition-all"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
