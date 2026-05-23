@@ -6,16 +6,15 @@ export default function Hero() {
   return (
     // FIX: removed fixed min-h-[calc(100vh-80px)] which pushed content off screen on short phones.
     // Now uses py-24 sm:py-28 for breathing room, content drives height naturally.
-    <section className="flex items-center pt-24 pb-16 sm:pt-28 sm:pb-20 px-6 max-w-7xl mx-auto min-h-[calc(100vh-80px)]">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center w-full">
+    <section className="pt-24 pb-16 sm:pt-28 sm:pb-20 px-6 max-w-7xl mx-auto lg:min-h-[calc(100vh-80px)] lg:flex lg:items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center w-full">
 
-        {/* ── Left ── */}
+        {/* ── Left — text (always first on mobile) ── */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          // FIX: order-last on mobile so text comes first, image below
-          className="order-last lg:order-first"
+          className="order-first"
         >
           {/* Badge */}
           <motion.div
@@ -87,15 +86,14 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* ── Right — Developer image ── */}
+        {/* ── Right — Developer image (below text on mobile, right on desktop) ── */}
         <motion.div
           initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-          // FIX: removed order-first / lg:order-last to keep natural order (image on top on mobile)
-          className="relative flex justify-center items-center"
+          className="relative flex justify-center items-center order-last lg:order-last"
         >
-          <div className="relative z-10 w-full max-w-[260px] sm:max-w-[300px] lg:max-w-[320px]">
+          <div className="relative z-10 w-full max-w-[220px] sm:max-w-[280px] lg:max-w-[320px]">
             <div className="rounded-[2.5rem] overflow-hidden border border-white/10 bg-[#111] p-3 group relative">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-[2.5rem]" />
 
@@ -103,7 +101,7 @@ export default function Hero() {
               <img
                 src="https://images.unsplash.com/photo-1607705703571-c5a8695f18f6?q=80&w=1470&auto=format&fit=crop"
                 alt="Developer coding"
-                className="w-full h-[240px] sm:h-[320px] lg:h-[420px] object-cover rounded-[2rem] grayscale group-hover:grayscale-0 transition-all duration-700"
+                className="w-full h-[200px] sm:h-[300px] lg:h-[420px] object-cover rounded-[2rem] grayscale group-hover:grayscale-0 transition-all duration-700"
                 referrerPolicy="no-referrer"
               />
             </div>
